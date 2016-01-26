@@ -3,7 +3,7 @@
 from scrapy.selector import Selector
 from scrapy.spiders import Spider
 from scrapy.contrib.loader import ItemLoader, Identity
-from mezitu.items import MeizituItem
+from meizitu.items import MeizituItem
 from scrapy import Request
 
 class MeizituSpider(Spider):
@@ -31,7 +31,7 @@ class MeizituSpider(Spider):
     def parse_item(self, response):
         l = ItemLoader(item=MeizituItem(), response=response)
         l.add_xpath('name', '//h2/a/text()')
-        l.add_xpath('tags', '//div[@od="maincontent"]/div[@class="postmeta clearfix"]/div[@class="metaRight"]/p')
+        l.add_xpath('tags', '//div[@id="maincontent"]/div[@class="postmeta clearfix"]/div[@class="metaRight"]/p')
         l.add_xpath('image_urls', '//div[@id="picture"]/p/img/@src', Identity())
         l.add_value('url', response.url)
 

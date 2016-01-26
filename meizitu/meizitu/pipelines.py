@@ -14,7 +14,7 @@ class ImageDownloadPipeline(object):
         if 'image_urls' in item:
             images = []
 
-            dir_path = '%s/%s' % (settings.IMAGE_STORE. spider.name)
+            dir_path = '%s/%s_imgs' % (settings.IMAGES_STORE, spider.name)
 
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
@@ -34,6 +34,8 @@ class ImageDownloadPipeline(object):
                     for block in response.iter_content(1024):
                         if not block:
                             break
+
+                        handle.write(block)
 
             item['images'] = images
 
