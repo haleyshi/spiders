@@ -15,41 +15,55 @@ class TBBKSpider(Spider):
     name = 'TBBK'
 
     allowed_domains = ['taobao.com']
+    allowed_domains = []
     start_urls = [
-        'http://s.taobao.com',
+        'https://s.taobao.com',
     ]
 
-    def start_requests(self):
-        for url in self.start_urls:
-            body = json.dumps({'url': url, 'wait': 0.5})
-            headers = Headers({'Content-Type': 'application/json'})
+    #iii = 0
 
-            yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
+    #def start_requests(self):
+    #    for url in self.start_urls:
+    #        body = json.dumps({'url': url, 'wait': 0.5})
+    #        headers = Headers({'Content-Type': 'application/json'})
+
+    #        yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
 
     def parse(self, response):
         #先进搜索首页
-        if response.url == 'http://s.taobao.com':
+        if response.url == 'https://s.taobao.com':
             # "鼠标 无线"的搜索链接
             url = "https://s.taobao.com/search?initiative_id=staobaoz_20120515&q=%E9%BC%A0%E6%A0%87+%E6%97%A0%E7%BA%BF"
 
-            yield Request(url, callback=self.parse)
+            body = json.dumps({'url': url, 'wait': 0.5})
+            headers = Headers({'Content-Type': 'application/json; charset=utf-8'})
+
+            yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
 
         else:
             sel = Selector(response)
 
             # 不能工作
-            all = sel.xpath('//div[@class="item"]/div[2]')
+            all = sel.xpath('//div[@class="item  "]/div[2]')
 
-            #file = codecs.open('page.htm', 'wb', encoding='utf-8')
+            #file = codecs.open('page_'+str(self.iii)+'.htm', 'wb', encoding='utf-8')
             #file.write(response.body.decode('unicode_escape'))
+            #self.iii += 1
+
+            #print all
 
             for one in all:
                 item = TaobabkItem()
 
                 goods_price = one.xpath('div[1]/div[1]/strong/text()').extract()
-                goods_sale_num = one.xpath('div[1]/div[@class="deal_cnt"]/text()').extract()
+
+                print goods_price
+                goods_sale_num = one.xpath('div[1]/div[@class="deal-cnt"]/text()').extract()
+
+                print goods_sale_num
                 # 提取数字
-                goods_sale_num = "".join([s for s in goods_sale_num[0] if s.isdigit()])
+                if len(goods_sale_num) > 0:
+                    goods_sale_num = "".join([s for s in goods_sale_num[0] if s.isdigit()])
 
                 goods_name = one.xpath('div[2]/a/text()').extract()
 
@@ -72,7 +86,11 @@ class TBBKSpider(Spider):
             ]
 
             for next_page_url in next_page_urls:
-                yield Request(next_page_url, callback=self.parse)
+                body = json.dumps({'url': next_page_url, 'wait': 0.5})
+                headers = Headers({'Content-Type': 'application/json; charset=utf-8'})
+
+                yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
+                #yield Request(next_page_url, callback=self.parse)
 
 
 

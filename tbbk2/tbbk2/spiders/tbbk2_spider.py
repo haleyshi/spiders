@@ -6,8 +6,12 @@ from scrapy.http import Request
 
 from tbbk2.items import Tbbk2Item
 
+import sys
+
+sys.path.insert(0, '..')
+
 #import codecs
-import json
+#import json
 
 class TBBKSpider(Spider):
     name = 'tbbk2'

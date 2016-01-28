@@ -8,6 +8,8 @@ from scrapy.http import HtmlResponse
 from spynner import Browser
 from pyquery import PyQuery
 
+import sys
+
 
 class RotateUserAgentMiddleware(UserAgentMiddleware):
 
@@ -61,7 +63,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
     ]
 
 
-class WebitDownloader():
+class WebitDownloader( object ):
     def process_request(self, request, spider):
         browser = Browser()
         browser.create_webview()

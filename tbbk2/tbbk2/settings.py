@@ -89,3 +89,7 @@ MONGODB_SERVER_IP = '127.0.0.1'
 MONGODB_SERVER_PORT = 27017
 MONGODB_DB_NAME = 'spiders'
 MONGODB_COLLECTION = 'tbbk2'
+
+
+import os
+os.environ['DISPLAY'] = ':0'
