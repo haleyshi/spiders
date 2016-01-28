@@ -57,10 +57,10 @@ class TBBKSpider(Spider):
 
                 goods_price = one.xpath('div[1]/div[1]/strong/text()').extract()
 
-                print goods_price
+                #print goods_price
                 goods_sale_num = one.xpath('div[1]/div[@class="deal-cnt"]/text()').extract()
 
-                print goods_sale_num
+                #print goods_sale_num
                 # 提取数字
                 if len(goods_sale_num) > 0:
                     goods_sale_num = "".join([s for s in goods_sale_num[0] if s.isdigit()])
