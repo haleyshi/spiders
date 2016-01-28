@@ -3,28 +3,20 @@
 from scrapy.spiders import Spider
 from scrapy.selector import Selector
 from scrapy.http import Request
-from scrapy.http.headers import Headers
-from scrapy.conf import settings
 
-from TaobaBK.items import TaobabkItem
+from tbbk2.items import Tbbk2Item
 
 #import codecs
 import json
 
 class TBBKSpider(Spider):
-    name = 'TBBK'
+    name = 'tbbk2'
 
     allowed_domains = ['taobao.com']
     start_urls = [
         'http://s.taobao.com',
     ]
 
-    def start_requests(self):
-        for url in self.start_urls:
-            body = json.dumps({'url': url, 'wait': 0.5})
-            headers = Headers({'Content-Type': 'application/json'})
-
-            yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
 
     def parse(self, response):
         #先进搜索首页
@@ -44,7 +36,7 @@ class TBBKSpider(Spider):
             #file.write(response.body.decode('unicode_escape'))
 
             for one in all:
-                item = TaobabkItem()
+                item = Tbbk2Item()
 
                 goods_price = one.xpath('div[1]/div[1]/strong/text()').extract()
                 goods_sale_num = one.xpath('div[1]/div[@class="deal_cnt"]/text()').extract()

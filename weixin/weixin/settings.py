@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for TaobaBK project
+# Scrapy settings for weixin project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'TaobaBK'
+BOT_NAME = 'weixin'
 
-SPIDER_MODULES = ['TaobaBK.spiders']
-NEWSPIDER_MODULE = 'TaobaBK.spiders'
+SPIDER_MODULES = ['weixin.spiders']
+NEWSPIDER_MODULE = 'weixin.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'TaobaBK (+http://www.yourdomain.com)'
+#USER_AGENT = 'weixin (+http://www.yourdomain.com)'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -24,13 +24,13 @@ NEWSPIDER_MODULE = 'TaobaBK.spiders'
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY=5
+DOWNLOAD_DELAY=2
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN=16
 #CONCURRENT_REQUESTS_PER_IP=16
 
 # Disable cookies (enabled by default)
-COOKIES_ENABLED=False
+#COOKIES_ENABLED=False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED=False
@@ -44,14 +44,14 @@ COOKIES_ENABLED=False
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'TaobaBK.middlewares.MyCustomSpiderMiddleware': 543,
+#    'weixin.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    'TaobaBK.spiders.user_middlewares.RotateUserAgentMiddleware': 211,
-}
+#DOWNLOADER_MIDDLEWARES = {
+#    'weixin.middlewares.MyCustomDownloaderMiddleware': 543,
+#}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -62,7 +62,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'TaobaBK.pipelines.TaobabkPipeline': 300,
+    'weixin.pipelines.WeixinPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -83,10 +83,3 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-MONGODB_SERVER_IP = '127.0.0.1'
-MONGODB_SERVER_PORT = 27017
-MONGODB_DB_NAME = 'spiders'
-MONGODB_COLLECTION = 'tbbk'
-
-SPLASH_RENDER_URL = 'http://192.168.99.100:8050/render.html'
