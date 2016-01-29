@@ -3,19 +3,19 @@
 from scrapy.spiders import Spider
 from scrapy.selector import Selector
 from scrapy.http import Request
-from scrapy.http.headers import Headers
-from scrapy.conf import settings
+#from scrapy.http.headers import Headers
+#from scrapy.conf import settings
 
-from TaobaBK.items import TaobabkItem
+from tbbk3.items import Tbbk3Item
+#from scrapyjs import SlotPolicy
 
 #import codecs
-import json
+#import json
 
 class TBBKSpider(Spider):
-    name = 'TBBK'
+    name = 'tbbk3'
 
     allowed_domains = ['taobao.com']
-    #allowed_domains = []
     start_urls = [
         'https://s.taobao.com',
     ]
@@ -34,11 +34,25 @@ class TBBKSpider(Spider):
         if response.url == 'https://s.taobao.com':
             # "鼠标 无线"的搜索链接
             url = "https://s.taobao.com/search?initiative_id=staobaoz_20120515&q=%E9%BC%A0%E6%A0%87+%E6%97%A0%E7%BA%BF"
+            yield Request(url, self.parse, meta={
+                'splash': {
+                    'endpoint': 'render.html',
+                    'args': {
+                        'wait': 0.5,
+                    }
 
-            body = json.dumps({'url': url, 'wait': 0.5})
-            headers = Headers({'Content-Type': 'application/json; charset=utf-8'})
+                    #'args': {
+                    #    'html': 1,
+                    #    'png': 1,
+                        # 'url' is prefilled from request url
+                    #},
 
-            yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
+                    #optional parameters
+                    #'endpoint': 'render.json'   # this is default
+                    #'splash_url': settings['SPLASH_RENDER_URL'], # can override SPLASH_URL
+                    #'slot_policy': SlotPolicy.PER_DOMAIN    #default, Concurrency & politeness: PER_DOMAIN, SINGLE_SLOT, SCRAPY_DEFAULT
+                }
+            })
 
         else:
             sel = Selector(response)
@@ -53,7 +67,7 @@ class TBBKSpider(Spider):
             #print all
 
             for one in all:
-                item = TaobabkItem()
+                item = Tbbk3Item()
 
                 goods_price = one.xpath('div[1]/div[1]/strong/text()').extract()
 
@@ -86,11 +100,14 @@ class TBBKSpider(Spider):
             ]
 
             for next_page_url in next_page_urls:
-                body = json.dumps({'url': next_page_url, 'wait': 0.5})
-                headers = Headers({'Content-Type': 'application/json; charset=utf-8'})
-
-                yield Request(settings['SPLASH_RENDER_URL'], self.parse, method='POST', body=body, headers=headers)
-                #yield Request(next_page_url, callback=self.parse)
+                yield Request(next_page_url, self.parse, meta={
+                    'splash': {
+                        'endpoint': 'render.html',
+                        'args': {
+                            'wait': 0.5,
+                        },
+                    }
+                })
 
 
 
